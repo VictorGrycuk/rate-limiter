@@ -1,8 +1,8 @@
 package com.ratelimiter.infrastructure.http.handler
 
 import com.ratelimiter.domain.notification.message.MessageType
-import com.ratelimiter.infrastructure.http.client.InvalidNotificationTypeException
-import com.ratelimiter.infrastructure.http.client.InvalidUserIdFormatTypeException
+import com.ratelimiter.infrastructure.http.exception.InvalidNotificationTypeException
+import com.ratelimiter.infrastructure.http.exception.InvalidUserIdFormatTypeException
 import com.ratelimiter.mothers.getRandomString
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

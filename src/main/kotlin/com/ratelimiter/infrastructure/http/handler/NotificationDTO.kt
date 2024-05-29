@@ -2,8 +2,8 @@ package com.ratelimiter.infrastructure.http.handler
 
 import com.ratelimiter.domain.notification.message.MessageType
 import com.ratelimiter.domain.notification.message.Notification
-import com.ratelimiter.infrastructure.http.client.InvalidNotificationTypeException
-import com.ratelimiter.infrastructure.http.client.InvalidUserIdFormatTypeException
+import com.ratelimiter.infrastructure.http.exception.InvalidNotificationTypeException
+import com.ratelimiter.infrastructure.http.exception.InvalidUserIdFormatTypeException
 import java.util.*
 
 data class NotificationDTO(

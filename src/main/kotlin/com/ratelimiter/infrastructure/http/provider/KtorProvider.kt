@@ -5,6 +5,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.ratelimiter.action.SendNotificationAction
 import com.ratelimiter.infrastructure.http.Path
+import com.ratelimiter.infrastructure.http.exception.RateLimitedException
 import com.ratelimiter.infrastructure.http.handler.NotificationDTO
 import io.ktor.http.*
 import io.ktor.serialization.jackson.*
@@ -36,6 +37,8 @@ object KtorProvider {
                 val notification: NotificationDTO = mapper.readValue(call.receiveText())
                 sendNotification(notification.toNotification())
                 call.response.status(HttpStatusCode.OK)
+            } catch (e: RateLimitedException) {
+                call.response.status(HttpStatusCode.TooManyRequests)
             } catch (e: Exception) {
                 println(e.message)
             }
