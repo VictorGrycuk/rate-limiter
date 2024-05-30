@@ -7,21 +7,21 @@ import java.util.concurrent.TimeUnit
 class BucketRateLimiter(
     private val maxTokens: Long,
     private var initialTokens: Long,
-    private val refillRate: Long,
+    refillRate: Long,
 ) {
     private val scheduler: ScheduledExecutorService = Executors.newScheduledThreadPool(1)
     init {
         scheduler.scheduleAtFixedRate({
             synchronized(this) {
-                initialTokens = minOf(maxTokens, initialTokens + refillRate)
+                initialTokens = maxTokens
             }
         }, refillRate, refillRate, TimeUnit.SECONDS)
     }
 
     @Synchronized
-    fun tryConsume(count: Int = 1): Boolean {
-        return if (initialTokens >= count) {
-            initialTokens -= count
+    fun tryConsume(): Boolean {
+        return if (initialTokens >= 1) {
+            initialTokens -= 1
             true
         } else {
             false

@@ -12,7 +12,13 @@ import org.kodein.di.instance
 
 object Services {
     val di = DI {
-        bindSingleton<RateLimiter> { RateLimiterImplementation(mapOf(MessageType.STATUS to BucketRateLimiter(1, 5, 1))) }
+        bindSingleton<RateLimiter> { RateLimiterImplementation(getRateLimiters()) }
         bindSingleton<NotificationService> { NotificationServiceImplementation(instance()) }
     }
+
+    private fun getRateLimiters(): Map<MessageType, BucketRateLimiter> = mapOf(
+        MessageType.STATUS to BucketRateLimiter(2, 2, 60),
+        MessageType.NEWS to BucketRateLimiter(1, 1, 86400),
+        MessageType.MARKETING to BucketRateLimiter(3, 3, 3600),
+    )
 }
