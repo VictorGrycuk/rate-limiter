@@ -1,0 +1,16 @@
+rateLimiter:
+  STATUS:
+    messageType: 'STATUS'
+    maxTokens: 2
+    initialTokens: 2
+    refillRate: 60
+  NEWS:
+    messageType: 'NEWS'
+    maxTokens: 2
+    initialTokens: 2
+    refillRate: 60
+  MARKETING:
+    messageType: 'MARKETING'
+    maxTokens: 2
+    initialTokens: 2
+    refillRate: 60

@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 buildscript {
     repositories {
         mavenCentral()
@@ -12,6 +14,12 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.6.21'
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.6.21'
     id 'com.github.johnrengelman.shadow' version '6.1.0'
+}
+
+tasks.withType(KotlinCompile).configureEach {
+    kotlinOptions {
+        jvmTarget = "16"
+    }
 }
 
 apply plugin: 'kotlin'
@@ -47,6 +55,8 @@ dependencies {
     implementation 'org.junit.jupiter:junit-jupiter:5.7.0'
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
     implementation "org.kodein.di:kodein-di-jvm:7.8.0"
+    implementation "com.sksamuel.hoplite:hoplite-core:2.7.5"
+    implementation "com.sksamuel.hoplite:hoplite-yaml:2.8.0.RC3"
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
     testImplementation "org.junit.jupiter:junit-jupiter-params:5.7.0"
     testImplementation "org.mockito.kotlin:mockito-kotlin:4.1.0"

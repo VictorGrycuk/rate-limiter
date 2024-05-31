@@ -8,7 +8,7 @@ class BucketRateLimiter(
     private val maxTokens: Long,
     private var initialTokens: Long,
     refillRate: Long,
-) {
+) : RateLimiter {
     private val scheduler: ScheduledExecutorService = Executors.newScheduledThreadPool(1)
     init {
         scheduler.scheduleAtFixedRate({
@@ -19,7 +19,7 @@ class BucketRateLimiter(
     }
 
     @Synchronized
-    fun tryConsume(): Boolean {
+    override fun tryConsume(): Boolean {
         return if (initialTokens >= 1) {
             initialTokens -= 1
             true

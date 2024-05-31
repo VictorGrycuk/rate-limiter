@@ -1,6 +1,6 @@
 package com.ratelimiter.infrastructure.services
 
-import com.ratelimiter.domain.notification.service.RateLimiter
+import com.ratelimiter.domain.notification.service.RateLimiterService
 import com.ratelimiter.infrastructure.http.exception.RateLimitedException
 import com.ratelimiter.mothers.getRandomMessage
 import org.junit.jupiter.api.Test
@@ -10,7 +10,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 class NotificationServiceImplementationTest {
-    private val rateLimiter: RateLimiter = mock()
+    private val rateLimiter: RateLimiterService = mock()
     private val notificationService = NotificationServiceImplementation(rateLimiter)
 
     @Test
