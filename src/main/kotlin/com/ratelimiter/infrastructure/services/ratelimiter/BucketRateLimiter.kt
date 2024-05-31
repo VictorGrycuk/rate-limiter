@@ -5,8 +5,8 @@ import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
 
 class BucketRateLimiter(
-    private val maxTokens: Long,
-    private var initialTokens: Long,
+    private val maxTokens: Int,
+    private var initialTokens: Int,
     refillRate: Long,
 ) : RateLimiter {
     private val scheduler: ScheduledExecutorService = Executors.newScheduledThreadPool(1)

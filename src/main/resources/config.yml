@@ -6,11 +6,11 @@ rateLimiter:
     refillRate: 60
   NEWS:
     messageType: 'NEWS'
-    maxTokens: 2
-    initialTokens: 2
-    refillRate: 60
+    maxTokens: 1
+    initialTokens: 1
+    refillRate: 86400
   MARKETING:
     messageType: 'MARKETING'
-    maxTokens: 2
-    initialTokens: 2
-    refillRate: 60
+    maxTokens: 3
+    initialTokens: 3
+    refillRate: 3600
