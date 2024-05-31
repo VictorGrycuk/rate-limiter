@@ -30,9 +30,19 @@ object Services {
             MessageType.STATUS,
             RateLimiterConfig(MessageType.STATUS, 2, 2, 60)
         )
+        val marketingConfiguration = configuration.rateLimiter.getOrDefault(
+            MessageType.MARKETING,
+            RateLimiterConfig(MessageType.STATUS, 3, 3, 10800)
+        )
+        val newsConfiguration = configuration.rateLimiter.getOrDefault(
+            MessageType.NEWS,
+            RateLimiterConfig(MessageType.STATUS, 1, 1, 86400)
+        )
 
         return RateLimiterImplementation(setOf(
-            BucketRateLimiterHandler(statusConfiguration)
+            BucketRateLimiterHandler(statusConfiguration),
+            BucketRateLimiterHandler(marketingConfiguration),
+            BucketRateLimiterHandler(newsConfiguration),
         ))
     }
 }
