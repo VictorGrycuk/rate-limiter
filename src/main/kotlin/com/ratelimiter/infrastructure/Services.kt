@@ -13,6 +13,7 @@ import com.sksamuel.hoplite.addResourceSource
 import org.kodein.di.DI
 import org.kodein.di.bindSingleton
 import org.kodein.di.instance
+import java.util.concurrent.TimeUnit
 
 object Services {
     val configuration = ConfigLoaderBuilder.default()
@@ -28,15 +29,15 @@ object Services {
     private fun getRateLimiter(): RateLimiterImplementation {
         val statusConfiguration = configuration.rateLimiter.getOrDefault(
             MessageType.STATUS,
-            RateLimiterConfig(MessageType.STATUS, 2, 2, 60)
+            RateLimiterConfig(MessageType.STATUS, 2, 2, TimeUnit.MINUTES.toSeconds(1))
         )
         val marketingConfiguration = configuration.rateLimiter.getOrDefault(
             MessageType.MARKETING,
-            RateLimiterConfig(MessageType.STATUS, 3, 3, 10800)
+            RateLimiterConfig(MessageType.STATUS, 3, 3, TimeUnit.HOURS.toSeconds(3))
         )
         val newsConfiguration = configuration.rateLimiter.getOrDefault(
             MessageType.NEWS,
-            RateLimiterConfig(MessageType.STATUS, 1, 1, 86400)
+            RateLimiterConfig(MessageType.STATUS, 1, 1, TimeUnit.DAYS.toSeconds(1))
         )
 
         return RateLimiterImplementation(setOf(
