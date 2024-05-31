@@ -43,6 +43,8 @@ class FixedWindowRateLimiter(
     @Synchronized
     override fun check(message: Notification) {
         synchronized(this) {
+            if (message.messageType != configuration.messageType)
+                return
             val remainingRequests = userRequests[message.userId]
             if (remainingRequests != null) {
                 validateRemainingRequests(remainingRequests)
