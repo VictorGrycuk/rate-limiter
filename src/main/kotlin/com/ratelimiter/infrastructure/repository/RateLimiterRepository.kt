@@ -9,7 +9,7 @@ import com.ratelimiter.infrastructure.services.ratelimiter.strategy.*
 class RateLimiterRepository {
     fun getRateLimiterHandler(config: RateLimiterConfig): RateLimiterHandler {
         return when(config.messageType) {
-            MessageType.STATUS -> getBucketRateLimiter(config)
+            MessageType.STATUS,
             MessageType.MARKETING -> getBucketRateLimiter(config)
             MessageType.NEWS -> getFixedWindowRateLimiter(config)
         }
