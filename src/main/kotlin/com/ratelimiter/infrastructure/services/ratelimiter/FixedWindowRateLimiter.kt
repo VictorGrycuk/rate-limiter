@@ -55,8 +55,9 @@ class FixedWindowRateLimiter(
         }
     }
 
-    private fun decreaseAllowedRequests(message: Notification) =
-        userRequests[message.userId]!!.dec()
+    private fun decreaseAllowedRequests(message: Notification) {
+        userRequests[message.userId] = userRequests[message.userId]!!.dec()
+    }
 
     private fun validateRemainingRequests(remainingRequests: Int) {
         if (remainingRequests == 0)
