@@ -3,7 +3,7 @@ package com.ratelimiter.infrastructure.services.ratelimiter
 import com.ratelimiter.domain.notification.message.Notification
 import com.ratelimiter.infrastructure.http.exception.RateLimitedException
 import com.ratelimiter.infrastructure.services.configuration.RateLimiterConfig
-import com.ratelimiter.infrastructure.services.ratelimiter.cor.CoRHandler
+import com.ratelimiter.infrastructure.services.ratelimiter.cor.Handler
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.Executors
@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 
 class BucketRateLimiter(
     private val configuration: RateLimiterConfig,
-) : CoRHandler {
+) : Handler {
     private val tokens = ConcurrentHashMap<UUID, Int>()
     private val scheduler: ScheduledExecutorService = Executors.newScheduledThreadPool(1)
     init {
