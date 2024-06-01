@@ -4,9 +4,9 @@ import com.ratelimiter.domain.notification.message.Notification
 import com.ratelimiter.domain.notification.service.RateLimiterService
 
 class RateLimiterImplementation(
-    private var handlers: Set<Handler>
+    private var rateLimiterHandlers: Set<RateLimiterHandler>
 ): RateLimiterService {
     override fun check(notification: Notification) {
-        handlers.forEach { it.check(notification) }
+        rateLimiterHandlers.forEach { it.check(notification) }
     }
 }

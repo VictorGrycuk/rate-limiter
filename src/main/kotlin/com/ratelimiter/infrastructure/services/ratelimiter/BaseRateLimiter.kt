@@ -2,7 +2,7 @@ package com.ratelimiter.infrastructure.services.ratelimiter
 
 import com.ratelimiter.domain.notification.message.Notification
 import com.ratelimiter.infrastructure.services.configuration.RateLimiterConfig
-import com.ratelimiter.infrastructure.services.ratelimiter.cor.Handler
+import com.ratelimiter.infrastructure.services.ratelimiter.cor.RateLimiterHandler
 import com.ratelimiter.infrastructure.services.ratelimiter.strategy.RateLimiterCheckStrategy
 import com.ratelimiter.infrastructure.services.ratelimiter.strategy.SchedulerStrategy
 import com.ratelimiter.infrastructure.services.ratelimiter.strategy.TokenValidationStrategy
@@ -14,7 +14,7 @@ class BaseRateLimiter(
     scheduler: SchedulerStrategy,
     private val shouldSkip: RateLimiterCheckStrategy,
     private val validateTokens: TokenValidationStrategy,
-) : Handler {
+) : RateLimiterHandler {
     private val tokens = ConcurrentHashMap<UUID, Int>()
     init {
         scheduler(tokens)
