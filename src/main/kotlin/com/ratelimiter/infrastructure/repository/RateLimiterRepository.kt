@@ -1,6 +1,6 @@
 package com.ratelimiter.infrastructure.repository
 
-import com.ratelimiter.domain.notification.message.MessageType
+import com.ratelimiter.infrastructure.services.configuration.RateLimitedKind
 import com.ratelimiter.infrastructure.services.configuration.RateLimiterConfig
 import com.ratelimiter.infrastructure.services.ratelimiter.BaseRateLimiter
 import com.ratelimiter.infrastructure.services.ratelimiter.cor.RateLimiterHandler
@@ -8,10 +8,9 @@ import com.ratelimiter.infrastructure.services.ratelimiter.strategy.*
 
 class RateLimiterRepository {
     fun getRateLimiterHandler(config: RateLimiterConfig): RateLimiterHandler {
-        return when(config.messageType) {
-            MessageType.STATUS,
-            MessageType.MARKETING -> getBucketRateLimiter(config)
-            MessageType.NEWS -> getFixedWindowRateLimiter(config)
+        return when(config.kind) {
+            RateLimitedKind.BUCKET -> getBucketRateLimiter(config)
+            RateLimitedKind.FIXED_WINDOW -> getFixedWindowRateLimiter(config)
         }
     }
 

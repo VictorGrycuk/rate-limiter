@@ -1,13 +1,16 @@
 rateLimiter:
   STATUS:
     messageType: 'STATUS'
+    kind: 'BUCKET'
     maxTokens: 2
     schedule: '0 */2 * ? * *'
   NEWS:
     messageType: 'NEWS'
+    kind: 'FIXED_WINDOW'
     maxTokens: 1
     schedule: '0 0 0 * * ?'
   MARKETING:
     messageType: 'MARKETING'
+    kind: 'BUCKET'
     maxTokens: 3
     schedule: '0 0 * ? * *'
