@@ -7,11 +7,10 @@ import com.ratelimiter.infrastructure.services.NotificationServiceImplementation
 import com.ratelimiter.infrastructure.services.configuration.Configuration
 import com.ratelimiter.infrastructure.services.configuration.RateLimiterConfig
 import com.ratelimiter.infrastructure.services.ratelimiter.BaseRateLimiter
-import com.ratelimiter.infrastructure.services.ratelimiter.bucket.BucketSchedulerStrategy
-import com.ratelimiter.infrastructure.services.ratelimiter.bucket.RefillBucketStrategy
+import com.ratelimiter.infrastructure.services.ratelimiter.strategy.RefillBucketStrategy
 import com.ratelimiter.infrastructure.services.ratelimiter.cor.RateLimiterImplementation
-import com.ratelimiter.infrastructure.services.ratelimiter.fixedwindow.FixedWindowRefillStrategy
-import com.ratelimiter.infrastructure.services.ratelimiter.fixedwindow.FixedWindowSchedulerStrategy
+import com.ratelimiter.infrastructure.services.ratelimiter.strategy.FixedWindowRefillStrategy
+import com.ratelimiter.infrastructure.services.ratelimiter.strategy.SchedulerStrategyImplementation
 import com.ratelimiter.infrastructure.services.ratelimiter.strategy.MessageTypeCheckStrategy
 import com.ratelimiter.infrastructure.services.ratelimiter.strategy.RemainingTokensValidationStrategy
 import com.sksamuel.hoplite.ConfigLoaderBuilder
@@ -19,7 +18,6 @@ import com.sksamuel.hoplite.addResourceSource
 import org.kodein.di.DI
 import org.kodein.di.bindSingleton
 import org.kodein.di.instance
-import java.util.concurrent.TimeUnit
 
 object Services {
     val configuration = ConfigLoaderBuilder.default()
@@ -35,40 +33,43 @@ object Services {
     private fun getRateLimiter(): RateLimiterImplementation {
         val statusConfiguration = configuration.rateLimiter.getOrDefault(
             MessageType.STATUS,
-            RateLimiterConfig(MessageType.STATUS, 2, 2, TimeUnit.MINUTES.toSeconds(1))
+            RateLimiterConfig(MessageType.STATUS, 2,"" )
         )
         val marketingConfiguration = configuration.rateLimiter.getOrDefault(
             MessageType.MARKETING,
-            RateLimiterConfig(MessageType.MARKETING, 3, 3, TimeUnit.HOURS.toSeconds(1))
+            RateLimiterConfig(MessageType.MARKETING, 3, "")
         )
         val newsConfiguration = configuration.rateLimiter.getOrDefault(
             MessageType.NEWS,
-            RateLimiterConfig(MessageType.NEWS, 1, 1, TimeUnit.DAYS.toSeconds(1))
+            RateLimiterConfig(MessageType.NEWS, 1, "")
         )
 
         val statusRateLimiter = BaseRateLimiter(
             statusConfiguration,
-            BucketSchedulerStrategy(
+            SchedulerStrategyImplementation(
                 statusConfiguration,
-                RefillBucketStrategy(statusConfiguration)),
+                RefillBucketStrategy()
+            ),
             MessageTypeCheckStrategy(statusConfiguration),
             RemainingTokensValidationStrategy()
         )
 
         val marketingRateLimiter = BaseRateLimiter(
             marketingConfiguration,
-            BucketSchedulerStrategy(
+            SchedulerStrategyImplementation(
                 marketingConfiguration,
-                RefillBucketStrategy(marketingConfiguration)),
+                RefillBucketStrategy()
+            ),
             MessageTypeCheckStrategy(marketingConfiguration),
             RemainingTokensValidationStrategy()
         )
 
         val newsRateLimiter = BaseRateLimiter(
             newsConfiguration,
-            FixedWindowSchedulerStrategy(
+            SchedulerStrategyImplementation(
                 newsConfiguration,
-                FixedWindowRefillStrategy()),
+                FixedWindowRefillStrategy()
+            ),
             MessageTypeCheckStrategy(newsConfiguration),
             RemainingTokensValidationStrategy()
         )

@@ -5,6 +5,5 @@ import com.ratelimiter.domain.notification.message.MessageType
 data class RateLimiterConfig(
     val messageType: MessageType,
     val maxTokens: Int,
-    val initialTokens: Int,
-    val refillRate: Long,
+    val schedule: String
 )

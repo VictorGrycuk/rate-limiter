@@ -2,15 +2,12 @@ rateLimiter:
   STATUS:
     messageType: 'STATUS'
     maxTokens: 2
-    initialTokens: 2
-    refillRate: 60
+    schedule: '0 */2 * ? * *'
   NEWS:
     messageType: 'NEWS'
     maxTokens: 1
-    initialTokens: 1
-    refillRate: 86400
+    schedule: '0 0 0 * * ?'
   MARKETING:
     messageType: 'MARKETING'
     maxTokens: 3
-    initialTokens: 3
-    refillRate: 3600
+    schedule: '0 0 * ? * *'
