@@ -6,9 +6,14 @@ import com.ratelimiter.domain.notification.service.RateLimiterService
 import com.ratelimiter.infrastructure.services.NotificationServiceImplementation
 import com.ratelimiter.infrastructure.services.configuration.Configuration
 import com.ratelimiter.infrastructure.services.configuration.RateLimiterConfig
-import com.ratelimiter.infrastructure.services.ratelimiter.BucketRateLimiter
-import com.ratelimiter.infrastructure.services.ratelimiter.FixedWindowRateLimiter
+import com.ratelimiter.infrastructure.services.ratelimiter.BaseRateLimiter
+import com.ratelimiter.infrastructure.services.ratelimiter.bucket.BucketSchedulerStrategy
+import com.ratelimiter.infrastructure.services.ratelimiter.bucket.RefillBucketStrategy
 import com.ratelimiter.infrastructure.services.ratelimiter.cor.RateLimiterImplementation
+import com.ratelimiter.infrastructure.services.ratelimiter.fixedwindow.FixedWindowRefillStrategy
+import com.ratelimiter.infrastructure.services.ratelimiter.fixedwindow.FixedWindowSchedulerStrategy
+import com.ratelimiter.infrastructure.services.ratelimiter.strategy.MessageTypeCheckStrategy
+import com.ratelimiter.infrastructure.services.ratelimiter.strategy.RemainingTokensValidationStrategy
 import com.sksamuel.hoplite.ConfigLoaderBuilder
 import com.sksamuel.hoplite.addResourceSource
 import org.kodein.di.DI
@@ -41,10 +46,37 @@ object Services {
             RateLimiterConfig(MessageType.NEWS, 1, 1, TimeUnit.DAYS.toSeconds(1))
         )
 
+        val statusRateLimiter = BaseRateLimiter(
+            statusConfiguration,
+            BucketSchedulerStrategy(
+                statusConfiguration,
+                RefillBucketStrategy(statusConfiguration)),
+            MessageTypeCheckStrategy(statusConfiguration),
+            RemainingTokensValidationStrategy()
+        )
+
+        val marketingRateLimiter = BaseRateLimiter(
+            marketingConfiguration,
+            BucketSchedulerStrategy(
+                marketingConfiguration,
+                RefillBucketStrategy(marketingConfiguration)),
+            MessageTypeCheckStrategy(marketingConfiguration),
+            RemainingTokensValidationStrategy()
+        )
+
+        val newsRateLimiter = BaseRateLimiter(
+            newsConfiguration,
+            FixedWindowSchedulerStrategy(
+                newsConfiguration,
+                FixedWindowRefillStrategy()),
+            MessageTypeCheckStrategy(newsConfiguration),
+            RemainingTokensValidationStrategy()
+        )
+
         return RateLimiterImplementation(setOf(
-            BucketRateLimiter(statusConfiguration),
-            BucketRateLimiter(marketingConfiguration),
-            FixedWindowRateLimiter(newsConfiguration),
+            statusRateLimiter,
+            marketingRateLimiter,
+            newsRateLimiter,
         ))
     }
 }
