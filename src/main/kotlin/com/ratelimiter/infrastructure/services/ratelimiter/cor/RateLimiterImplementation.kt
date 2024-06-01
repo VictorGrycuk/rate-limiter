@@ -7,6 +7,8 @@ class RateLimiterImplementation(
     private var rateLimiterHandlers: Set<RateLimiterHandler>
 ): RateLimiterService {
     override fun check(notification: Notification) {
-        rateLimiterHandlers.forEach { it.check(notification) }
+        rateLimiterHandlers
+            .filter { it.shouldHandleMessage(notification) }
+            .forEach { it.check(notification) }
     }
 }

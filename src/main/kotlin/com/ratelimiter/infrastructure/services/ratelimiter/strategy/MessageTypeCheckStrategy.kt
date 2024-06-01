@@ -7,5 +7,5 @@ class MessageTypeCheckStrategy(
     private val configuration: RateLimiterConfig,
 ): RateLimiterCheckStrategy {
     override fun invoke(message: Notification) =
-        message.messageType != configuration.messageType
+        message.messageType == configuration.messageType
 }

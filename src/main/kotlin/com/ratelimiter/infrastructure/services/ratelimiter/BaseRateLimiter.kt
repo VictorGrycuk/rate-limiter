@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap
 class BaseRateLimiter(
     private val configuration: RateLimiterConfig,
     scheduler: SchedulerStrategy,
-    private val shouldSkip: RateLimiterCheckStrategy,
+    private val isCorrectMessage: RateLimiterCheckStrategy,
     private val validateTokens: TokenValidationStrategy,
 ) : RateLimiterHandler {
     private val tokens = ConcurrentHashMap<UUID, Int>()
@@ -20,12 +20,12 @@ class BaseRateLimiter(
         scheduler(tokens)
     }
 
+    override fun shouldHandleMessage(message: Notification) =
+        this.isCorrectMessage(message)
+
     @Synchronized
     override fun check(message: Notification) {
         synchronized(this) {
-            if (shouldSkip(message))
-                return
-
             tokens.computeIfPresent(message.userId) { _, currentTokens ->
                 validateTokens(currentTokens)
                 currentTokens.dec()
