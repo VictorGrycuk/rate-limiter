@@ -6,8 +6,8 @@ import com.ratelimiter.domain.notification.service.RateLimiterService
 import com.ratelimiter.infrastructure.services.NotificationServiceImplementation
 import com.ratelimiter.infrastructure.services.configuration.Configuration
 import com.ratelimiter.infrastructure.services.configuration.RateLimiterConfig
+import com.ratelimiter.infrastructure.services.ratelimiter.BucketRateLimiter
 import com.ratelimiter.infrastructure.services.ratelimiter.FixedWindowRateLimiter
-import com.ratelimiter.infrastructure.services.ratelimiter.cor.BucketRateLimiterHandler
 import com.ratelimiter.infrastructure.services.ratelimiter.cor.RateLimiterImplementation
 import com.sksamuel.hoplite.ConfigLoaderBuilder
 import com.sksamuel.hoplite.addResourceSource
@@ -42,8 +42,8 @@ object Services {
         )
 
         return RateLimiterImplementation(setOf(
-            BucketRateLimiterHandler(statusConfiguration),
-            BucketRateLimiterHandler(marketingConfiguration),
+            BucketRateLimiter(statusConfiguration),
+            BucketRateLimiter(marketingConfiguration),
             FixedWindowRateLimiter(newsConfiguration),
         ))
     }

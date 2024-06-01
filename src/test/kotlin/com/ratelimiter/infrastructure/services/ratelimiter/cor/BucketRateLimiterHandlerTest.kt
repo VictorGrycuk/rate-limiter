@@ -3,6 +3,7 @@ package com.ratelimiter.infrastructure.services.ratelimiter.cor
 import com.ratelimiter.domain.notification.message.MessageType
 import com.ratelimiter.infrastructure.http.exception.RateLimitedException
 import com.ratelimiter.infrastructure.services.configuration.RateLimiterConfig
+import com.ratelimiter.infrastructure.services.ratelimiter.BucketRateLimiter
 import com.ratelimiter.mothers.getRandomMessage
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -13,7 +14,7 @@ class BucketRateLimiterHandlerTest {
         val configuration = RateLimiterConfig(MessageType.STATUS, 2, 2, 10)
         val message = getRandomMessage(MessageType.STATUS)
 
-        val bucketRateLimiter = BucketRateLimiterHandler(configuration)
+        val bucketRateLimiter = BucketRateLimiter(configuration)
 
         repeat(2) { bucketRateLimiter.check(message) }
 
@@ -27,7 +28,7 @@ class BucketRateLimiterHandlerTest {
         val configuration = RateLimiterConfig(MessageType.STATUS, 1, 1, 10)
         val message = getRandomMessage(MessageType.MARKETING)
 
-        val bucketRateLimiter = BucketRateLimiterHandler(configuration)
+        val bucketRateLimiter = BucketRateLimiter(configuration)
 
         repeat(2) { bucketRateLimiter.check(message) }
     }
