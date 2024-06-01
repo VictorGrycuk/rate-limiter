@@ -19,7 +19,7 @@ class RateLimiterRepository {
         config,
         SchedulerStrategyImplementation(
             config,
-            RefillBucketStrategy()
+            RefillBucketStrategy::class.java
         ),
         MessageTypeCheckStrategy(config),
         RemainingTokensValidationStrategy()
@@ -29,7 +29,7 @@ class RateLimiterRepository {
         config,
         SchedulerStrategyImplementation(
             config,
-            FixedWindowRefillStrategy()
+            FixedWindowRefillStrategy::class.java
         ),
         MessageTypeCheckStrategy(config),
         RemainingTokensValidationStrategy()

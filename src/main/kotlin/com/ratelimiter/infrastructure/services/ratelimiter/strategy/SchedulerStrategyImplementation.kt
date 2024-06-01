@@ -9,13 +9,13 @@ import java.util.concurrent.ConcurrentHashMap
 
 class SchedulerStrategyImplementation(
     private val configuration: RateLimiterConfig,
-    private val clazz: Job
+    private val clazz: Class<out Job>
 ): SchedulerStrategy {
     private var scheduler: Scheduler = StdSchedulerFactory.getDefaultScheduler()
 
     override fun invoke(tokens: ConcurrentHashMap<UUID, Int>) {
         val job = JobBuilder
-            .newJob(clazz::class.java)
+            .newJob(clazz)
             .withIdentity(configuration.messageType.name)
             .build()
         val trigger: Trigger = TriggerBuilder
