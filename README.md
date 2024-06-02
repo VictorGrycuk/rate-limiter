@@ -27,3 +27,19 @@ This allows to add, remove, and order elements in the chain more easily than exp
 
 ### Strategy
 While it started as a template method pattern, I opted for composition over inheritance since it is much easier to test. It ended up looking more like a strategy pattern than a template method.
+
+## How to run it
+After running the project in an IDE of your choice, the following endpoint will be available:
+`POST http://localhost:8080/notification`.
+
+The accepted body is the following:
+
+```json
+{
+  "messageType": "STATUS",
+  "message": "message",
+  "userId": "c31d4206-2955-4098-a341-833349b8811a"
+}
+```
+
+If the message has not been rate limited, a request will be printed to the console.
